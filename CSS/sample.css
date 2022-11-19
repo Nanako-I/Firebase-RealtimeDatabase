@@ -1,0 +1,76 @@
+.heart{
+  margin: 0 80% 0 20%;
+  font-size: 40px;
+  color:#e4e4e4;
+  /* テキストがクリックされないようにする↓ */
+  user-select: none;
+  /* display:none; */
+}
+
+.checkbox{
+  margin: 0 35% 0 65%;
+}
+
+/* チェックボックスが☑されたとき↓ */
+.like [type="checkbox"]:checked ~ .heart{
+  animation-name: heart;
+  /* 0.6秒に設定↓ */
+  animation-duration: .6s;
+/* ☑してもハートが赤いままにする↓ */
+  animation-fill-mode: forwards;
+}
+
+@keyframes heart{
+  /* 何もないところからハートを出す↓ */
+  0%{
+      transform: scale(0);
+  }
+  /* 少し大きくなる↓ */
+  50%{
+      transform: scale(1.1);
+  }
+  /* 100%で元のサイズ（1）に戻る↓ */
+  100%{
+      transform: scale(1);
+      color: red;
+  }
+}
+
+
+.gomibako{
+  margin: 0 80% 0 20%;
+  font-size: 40px;
+  color:#e4e4e4;
+  /* テキストがクリックされないようにする↓ */
+  user-select: none;
+  /* display:none; */
+}
+
+.checkbox{
+  margin: 0 35% 0 65%;
+}
+
+/* チェックボックスが☑されたとき↓ */
+.gomi [type="checkbox"]:checked ~ .gomibako{
+  animation-name: gomibako;
+  /* 0.6秒に設定↓ */
+  animation-duration: .6s;
+/* ☑してもハートが赤いままにする↓ */
+  animation-fill-mode: forwards;
+}
+
+@keyframes gomibako{
+  /* 何もないところからハートを出す↓ */
+  0%{
+      transform: scale(0);
+  }
+  /* 少し大きくなる↓ */
+  50%{
+      transform: scale(1.1);
+  }
+  /* 100%で元のサイズ（1）に戻る↓ */
+  100%{
+      transform: scale(1);
+      color: #808080;
+  }
+}

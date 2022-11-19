@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Firebase_version9_RealtimeDB(G'sACADEMY初学者用サンプル)</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+      <!-- ↑マテリアルアイコンのURL -->
+<link rel="stylesheet" href="css/sample.css">
+
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+
+<div>
+    <div> 名前：<input type="text" id="uname"> </div>
+    <div>
+        <textarea id="text" cols="30" rows="10"></textarea>
+        <button id="send">送信</button>
+
+    <!-- ハートアイコン↓ -->
+    <!-- ラベルタグで囲む↓ -->
+    <div heart_area>
+        <label class="like">
+        <!-- inputタグでチェックボックスを作る↓ -->
+        <input type="checkbox">
+         <!-- マテリアルアイコンのクラス属性にheartをつける↓ -->
+           <i class="material-icons heart" >favorite</i>
+        </label>
+    </div>
+        
+    </div>
+    <div id="output"></div>
+</div>
+<!--/ コンテンツ表示画面 -->
+
+
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- JQuery -->
+
+
+<!--** 以下Firebase **-->
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, remove,onChildRemoved } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+
+
+    const firebaseConfig = {
+    
+    };
+
+
+
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+
+    const db = getDatabase(app);
+    const dbRef = ref(db, 'dev245');
+
+    // 送信処理を記述
+    $('#send').on('click', function(){
+
+        const uname=$('#uname').val();
+        console.log(uname,'データの取得の仕方で表示が異なる')
+        const text=$('#text').val();
+        console.log(text,'データの取得の仕方で表示が異なる')
+        alert(uname + text);
+        
+
+            // データの塊を作ります🤗
+            // msg という名前で塊を作ります
+            // unameという鍵の名前
+            // textというカギの名前
+            // 作成したデータの塊をfirebaseに送信をします⇨つまりこれが保存になります🤗
+            const msg = {
+                uname: uname,
+                text: text,
+                
+            }
+
+            // firebaseに送る準備をしていることになります🤗
+            const newPostRef = push(dbRef) //データを送信できる準備
+            set(newPostRef, msg); // firebaseの登録できる場所に保存するイメージです🤗
+
+             // 送信後に、入力欄を空にしましょう🤗
+             $('#uname').val("");
+            $('#text').val("");
+
+            // これを使うとどうなるかみてみましょう🤗
+            // 答）入力後に入力フォームが自動で消える↓
+            $("#uname").focus();
+
+            // send送信イベント ※※この下消さない！！！！！
+        });
+
+     // 受信処理を記述
+        onChildAdded(dbRef, function (data) {
+            // ここからが受信処理が始まります
+
+            // 登録されたデータを取得します🤗
+            const msg = data.val();
+            console.log(msg, '取得したデータの塊')
+            const key = data.key;
+            console.log(key, 'データの塊にアクセス')
+        
+
+            // $("#heart").fadeIn(500);
+
+
+            // es6のテンプレートリテラル
+            let h = `
+                <div class="msg">
+                    <p>${msg.uname}</p>
+                    <p>${msg.text}</p>
+                    <label class="like">
+                    <input type="checkbox" >
+                    <i class="material-icons heart" >favorite</i>
+                    </label>
+                    <label class="gomi">
+                    <input type="checkbox" id="delete_icon">
+
+                    <i class="material-icons gomibako" >delete</i>
+                
+                   </label>
+                </div>    
+            `;
+          
+            // htmlに埋め込みましょう🤗
+            // append();というjqueryのおまじないを使います
+            $("#output").append(h);
+        })
+
+        // 削除処理を記述
+
+        $(document).on("click","#delete_icon",function(){
+
+            // console.log(data.key);
+            // remove(ref(db, "dev245/" + data.key));
+        
+            // keyを削除したい
+            // parent()で親要素を取得
+
+            let target = $(this).parent();
+            // console.log(JSON.stringify(target));
+            console.log(msg.uname, msg.text);
+            alert(target);
+            remove(ref(db,"dev245/" +target));
+
+        });
+
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
