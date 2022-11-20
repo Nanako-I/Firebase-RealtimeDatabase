@@ -14,22 +14,13 @@
 
 <!-- コンテンツ表示画面 -->
 
-<div>
+<div class="form">
     <div> 名前：<input type="text" id="uname"> </div>
     <div>
         <textarea id="text" cols="30" rows="10"></textarea>
         <button id="send">送信</button>
 
-    <!-- ハートアイコン↓ -->
-    <!-- ラベルタグで囲む↓ -->
-    <div heart_area>
-        <label class="like">
-        <!-- inputタグでチェックボックスを作る↓ -->
-        <input type="checkbox">
-         <!-- マテリアルアイコンのクラス属性にheartをつける↓ -->
-           <i class="material-icons heart" >favorite</i>
-        </label>
-    </div>
+   
         
     </div>
     <div id="output"></div>
@@ -63,11 +54,17 @@
 
   
     // Initialize Firebase
+    
+    var msg= ["uname","text"];
+    console.log(msg);
+    var key="key";
+    console.log(key);
     const app = initializeApp(firebaseConfig);
 
 
     const db = getDatabase(app);
     const dbRef = ref(db, 'dev245');
+
 
     // 送信処理を記述
     $('#send').on('click', function(){
@@ -110,13 +107,10 @@
             // ここからが受信処理が始まります
 
             // 登録されたデータを取得します🤗
-            const msg = data.val();
+            msg = data.val();
             console.log(msg, '取得したデータの塊')
-            const key = data.key;
+            key = data.key;
             console.log(key, 'データの塊にアクセス')
-        
-
-            // $("#heart").fadeIn(500);
 
 
             // es6のテンプレートリテラル
@@ -125,7 +119,9 @@
                     <p>${msg.uname}</p>
                     <p>${msg.text}</p>
                     <label class="like">
+                    <!-- inputタグでチェックボックスを作る↓ -->
                     <input type="checkbox" >
+                    <!-- マテリアルアイコンのクラス属性にheartをつける↓ -->
                     <i class="material-icons heart" >favorite</i>
                     </label>
                     <label class="gomi">
@@ -154,6 +150,7 @@
 
             let target = $(this).parent();
             // console.log(JSON.stringify(target));
+            
             console.log(msg.uname, msg.text);
             alert(target);
             remove(ref(db,"dev245/" +target));

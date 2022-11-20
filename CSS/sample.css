@@ -1,3 +1,41 @@
+body{background-color:#FFFFCC;
+}
+
+.form{
+  /* display: flex; */
+  justify-content: center;
+}
+
+.msg:nth-child(odd){
+  background: #ff7f50;
+  margin-left: auto;
+  width: 40%;
+  border-radius: 10px;
+
+}
+
+.msg:before {
+  content: "";
+  /* borderで三角形を作る */
+  border: 10px solid transparent;
+  border-top: 10px solid #ff7f50;
+  /* 配置する */
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+.msg:nth-child(even){
+  background: #ffb6c1;
+  margin-right: auto;
+  width: 40%;
+  border-radius: 10px;
+
+}
+
+
 .heart{
   margin: 0 80% 0 20%;
   font-size: 40px;
