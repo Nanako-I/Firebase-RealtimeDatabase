@@ -3,39 +3,79 @@ body{background-color:#FFFFCC;
 
 .form{
   /* display: flex; */
-  justify-content: center;
+  /* /* align-items: center; */
+  text-align: center;
+  /* justify-content: center; */
+  position:relative;
+  /* margin: 0 auto; */
+  /* transform: translateX(-50%); */
+  flex-direction: column;
 }
 
+.name{
+/* padding: をつけ名前入力部分を真ん中に微調整 */
+  padding: 0 100px 0 50px;
+}
+
+/* ------------------------------
+　　　　　オレンジの吹き出し
+------------------------------ */
 .msg:nth-child(odd){
   background: #ff7f50;
   margin-left: auto;
   width: 40%;
   border-radius: 10px;
-
+  position: relative;
+  margin: 0 20px 0 auto;
 }
 
-.msg:before {
+.msg:nth-child(odd):before {
   content: "";
   /* borderで三角形を作る */
   border: 10px solid transparent;
-  border-top: 10px solid #ff7f50;
+  /* border-left:で右向きの三角形を作る↓ */
+  border-left: 30px solid #ff7f50;
   /* 配置する */
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  /* 上から50％ */
+  top: 50%;
+  /* 四角の右横に吹き出しをつけるため、-24PXと指定 */
+  right: -24px;
+  /* transform: translateX(-50%); */
 }
 
+
+/* ------------------------------
+　　　　ピンクの吹き出し
+------------------------------ */
 
 .msg:nth-child(even){
   background: #ffb6c1;
   margin-right: auto;
   width: 40%;
   border-radius: 10px;
-
+  position: relative;
+  margin: 0 auto 0 20px;
 }
 
+.msg:nth-child(even):before {
+  content: "";
+  /* borderで三角形を作る */
+  border: 10px solid transparent;
+  /* border-right:で左向きの三角形を作る↓ */
+  border-right: 30px solid #ffb6c1;
+  /* 配置する */
+  position: absolute;
+  /* 上から50％ */
+  top: 50%;
+  /* 四角の左横に吹き出しをつけるため、-24PXと指定 */
+  left: -24px;
+  /* transform: translateX(-50%); */
+}
 
+/* ------------------------------
+　　　　ハートのアイコン
+------------------------------ */
 .heart{
   margin: 0 80% 0 20%;
   font-size: 40px;
@@ -74,7 +114,9 @@ body{background-color:#FFFFCC;
   }
 }
 
-
+/* ------------------------------
+　　　　ゴミ箱のアイコン
+------------------------------ */
 .gomibako{
   margin: 0 80% 0 20%;
   font-size: 40px;
@@ -93,12 +135,12 @@ body{background-color:#FFFFCC;
   animation-name: gomibako;
   /* 0.6秒に設定↓ */
   animation-duration: .6s;
-/* ☑してもハートが赤いままにする↓ */
+/* ☑してもゴミ箱が灰色のままにする↓ */
   animation-fill-mode: forwards;
 }
 
 @keyframes gomibako{
-  /* 何もないところからハートを出す↓ */
+  /* 何もないところからゴミ箱を出す↓ */
   0%{
       transform: scale(0);
   }
