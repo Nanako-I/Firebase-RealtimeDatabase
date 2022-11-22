@@ -48,7 +48,7 @@
 
 
     const firebaseConfig = {
-    
+
     };
 
 
@@ -56,9 +56,11 @@
   
     // Initialize Firebase
     
-    var msg= ["uname","text"];
+    var msg="";
+    // var msg= ["uname","text"];
     console.log(msg);
-    var key="key";
+    var key="";
+    // var key="key";
     console.log(key);
     const app = initializeApp(firebaseConfig);
 
@@ -82,7 +84,7 @@
             // unameという鍵の名前
             // textというカギの名前
             // 作成したデータの塊をfirebaseに送信をします⇨つまりこれが保存になります🤗
-            const msg = {
+            msg = {
                 uname: uname,
                 text: text,
                 
@@ -126,7 +128,7 @@
                     <i class="material-icons heart" >favorite</i>
                     </label>
                     <label class="gomi">
-                    <input type="checkbox" id="delete_icon">
+                    <input type="checkbox" id="delete_icon" name="${key}">
 
                     <i class="material-icons gomibako" >delete</i>
                 
@@ -142,20 +144,14 @@
         // 削除処理を記述
 
         $(document).on("click","#delete_icon",function(){
-
-            // console.log(data.key);
-            // remove(ref(db, "dev245/" + data.key));
-        
             // keyを削除したい
-            // parent()で親要素を取得
-
-            let target = $(this).parent();
+            let target = $(this).attr("name");
             // console.log(JSON.stringify(target));
             
-            console.log(msg.uname, msg.text);
+            console.log(target);
             alert(target);
             remove(ref(db,"dev245/" +target));
-
+            location.reload();
         });
 
 

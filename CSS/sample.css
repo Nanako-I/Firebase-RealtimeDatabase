@@ -1,6 +1,28 @@
+/* --------------------------
+　　　　ログインページ
+-------------------------- */
+#login{
+  
+  margin: auto;
+  justify-content: center;
+  width: 200px;
+  height: 100px;
+  font-size: 40px;
+  cursor:pointer;
+}
+
+.flex {
+  text-align: center;
+  margin: auto;
+}
+
+
 body{background-color:#FFFFCC;
 }
 
+/* --------------------------
+　　　　本体ページ
+-------------------------- */
 .form{
   /* display: flex; */
   /* /* align-items: center; */
