@@ -43,7 +43,7 @@ body{background-color:#FFFFCC;
 　　　　　オレンジの吹き出し
 ------------------------------ */
 .msg:nth-child(odd){
-  background: #ff7f50;
+  background: #ffa500;
   margin-left: auto;
   width: 40%;
   border-radius: 10px;
@@ -56,7 +56,7 @@ body{background-color:#FFFFCC;
   /* borderで三角形を作る */
   border: 10px solid transparent;
   /* border-left:で右向きの三角形を作る↓ */
-  border-left: 30px solid #ff7f50;
+  border-left: 30px solid #ffa500;
   /* 配置する */
   position: absolute;
   /* 上から50％ */
