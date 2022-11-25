@@ -18,6 +18,9 @@
 
 
 body{background-color:#FFFFCC;
+  width: 1200px;
+  margin: 0 auto;
+  /* 左右をautoにすることで自動的に中央ぞろえにしてくれる */
 }
 
 /* --------------------------
@@ -32,13 +35,23 @@ body{background-color:#FFFFCC;
   /* margin: 0 auto; */
   /* transform: translateX(-50%); */
   flex-direction: column;
+  margin: 30px auto;
 }
 
 .name{
 /* padding: をつけ名前入力部分を真ん中に微調整 */
-  padding: 0 100px 0 50px;
+  padding: 0 200px 0 50px;
 }
 
+#curry{
+  height: 100px;
+  width: 100px;
+}
+#myimg {
+  height: 200px;
+  width: 200px;
+  border: 2px black solid;
+}
 /* ------------------------------
 　　　　　オレンジの吹き出し
 ------------------------------ */

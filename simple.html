@@ -18,9 +18,16 @@
     <div class="name"> 名前：<input type="text" id="uname"> </div>
     <div>
         <textarea id="text" cols="30" rows="10"></textarea>
+        <img src="img/curry.png" id=curry alt="カレー">
         <button id="send">送信</button>
 
-   
+        <label id="extlab"></label><br />
+        <img id="myimg" alt="" /><label for="" id="upprogress"></label>
+
+        <label>Image Name</label><input type="text" id="namebox" />
+        <button id="selbtn">画像を選ぶ</button>
+        <button id="upbtn">画像をアップロード</button>
+        <button id="downbtn">Retrieve</button>
         
     </div>
 </div>
@@ -39,8 +46,8 @@
 
 <script type="module">
     // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onChildAdded, remove,onChildRemoved, serverTimestamp} from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, remove,onChildRemoved, serverTimestamp} from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -48,11 +55,9 @@
 
 
     const firebaseConfig = {
+     
     };
 
-
-
-  
     // Initialize Firebase
     
     var msg="";
@@ -63,10 +68,144 @@
     console.log(key);
     const app = initializeApp(firebaseConfig);
 
+    import {
+                getStorage,
+                ref as sRef,
+                uploadBytesResumable,
+                getDownloadURL,
+            } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
+            import {
+                getFirestore,
+                doc,
+                getDoc,
+                setDoc,
+                collection,
+                addDoc,
+            } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
+
+            const clouddb = getFirestore();
 
     const db = getDatabase(app);
     const dbRef = ref(db, 'dev245');
 
+    let files = [];
+            let reader = new FileReader();
+            let namebox = document.getElementById("namebox");
+            let extlab = document.getElementById("extlab");
+            let myimg = document.getElementById("myimg");
+            let proglab = document.getElementById("upprogress");
+            let SelBtn = document.getElementById("selbtn");
+            let UpBtn = document.getElementById("upbtn");
+            let DownBtn = document.getElementById("downbtn");
+
+            let input = document.createElement("input");
+            input.type = "file";
+
+            console.log(input);
+
+            // eに読み取るファイルの情報が入ってくる↓
+            input.onchange = (e) => {
+                console.log(e);
+                files = e.target.files;
+                let extention = GetFileExt(files[0]);
+                let name = GetFileName(files[0]);
+
+
+                namebox.value = name;
+                extlab.innerHTML = extention;
+                reader.readAsDataURL(files[0]);
+            };
+            reader.onload = function () {
+                myimg.src = reader.result;
+            };
+
+            // ----------画像を選ぶ処理--------------
+            SelBtn.onclick = function () {
+                console.log(1111);
+                input.click();
+            };
+
+            function GetFileExt(file) {
+                let temp = file.name.split(".");
+                let ext = temp.slice(temp.length - 1, temp.length);
+                return "." + ext[0];
+            }
+
+            function GetFileName(file) {
+                let temp = file.name.split(".");
+                let fname = temp.slice(0, -1).join(".");
+                return fname;
+            }
+// -------------画像アップロード処理-------------------------
+
+            async function UploadProcess() {
+                let ImgToUpload = files[0];
+
+                let ImgName = namebox.value + extlab.innerHTML;
+
+                const metaData = {
+                    contentType: ImgToUpload.type,
+                };
+                const storage = getStorage();
+
+                const storageRef = sRef(storage, "Images/" + ImgName);
+
+                const UploadTask = uploadBytesResumable(
+                    storageRef,
+                    ImgToUpload,
+                    metaData
+                );
+
+                UploadTask.on(
+                    "state-changed",
+                    (snapshot) => {
+                        let progress =
+                            (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100;
+                        proglab.innerHTML = "Upload " + progress + "%";
+                        console.log(snapshot);
+                    },
+                    (error) => {
+                        alert("エラーです！アップロードできてません！！");
+                    },
+                    () => {
+                        getDownloadURL(UploadTask.snapshot.ref).then(
+                            (downloadURL) => {
+                                SaveURLtoFirestore(downloadURL);
+                                console.log(downloadURL);
+                            }
+                        );
+                    }
+                );
+            }
+
+            UpBtn.onclick = UploadProcess;
+
+            // --------------------------- functions for firestore database---------------------------
+
+            async function SaveURLtoFirestore(url) {
+                let name = namebox.value;
+                let ext = extlab.innerHTML;
+
+                let ref = doc(clouddb, "ImageLinks/" + name);
+
+                await setDoc(ref, {
+                    ImageName: name + ext,
+                    ImageURL: url,
+                });
+            }
+
+            async function GetImagefromFirestore() {
+                let name = namebox.value;
+
+                let ref = doc(clouddb, "ImageLinks/" + name);
+
+                const docSnap = await getDoc(ref);
+                if (docSnap.exists()) {
+                    myimg.src = docSnap.data().ImageURL;
+                }
+            }
+            DownBtn.onclick = GetImagefromFirestore;
 
     // 送信処理を記述
     $('#send').on('click', function(){
@@ -86,9 +225,15 @@
             msg = {
                 uname: uname,
                 text: text,
+                // stamp: curry,
+
                 // firebaseに登録された時間を取得できる↓
                  date: serverTimestamp(),
             }
+
+            // $('#curry').on('click', function(){
+            //     <img src="img/curry.png">${msg.text}
+            // })
 
             // firebaseに送る準備をしていることになります🤗
             const newPostRef = push(dbRef) //データを送信できる準備
